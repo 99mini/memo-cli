@@ -84,4 +84,39 @@ yargs(hideBin(process.argv))
       saveTodos(todos);
     }
   )
+  .command(
+    "delete <id>",
+    "Delete todo",
+    (yargs) => {
+      return yargs.positional("id", { type: "string" });
+    },
+    (argv) => {
+      const todos = loadTodos();
+      const index = todos.findIndex((todo) => todo.id === argv.id);
+      if (index === -1) {
+        console.log("Todo not found");
+        return;
+      }
+      todos.splice(index, 1);
+      saveTodos(todos);
+    }
+  )
+  .command(
+    "done <id>",
+    "Mark todo as done",
+    (yargs) => {
+      return yargs.positional("id", { type: "string" });
+    },
+    (argv) => {
+      const todos = loadTodos();
+      const index = todos.findIndex((todo) => todo.id === argv.id);
+      if (index === -1) {
+        console.log("Todo not found");
+        return;
+      }
+      todos[index].done = true;
+      todos[index].updatedAt = new Date();
+      saveTodos(todos);
+    }
+  )
   .parse();

@@ -1,18 +1,19 @@
 {
-  "name": "todo-cli",
+  "name": "memo-cli",
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsup src/index.ts --format cjs",
-    "package": "npx pkg ./dist/index.js --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --output todo-cli"
+    "package": "npx pkg ./dist/index.js --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --output memo",
+    "deploy:local": "mv memo-macos ~/.bin/memo && chmod +x ~/.bin/memo"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "bin": {
-    "todo": "dist/index.js"
+    "memo": "dist/index.js"
   },
   "devDependencies": {
     "@types/node": "^22.15.17",
