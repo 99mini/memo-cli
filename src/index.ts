@@ -57,7 +57,20 @@ yargs(hideBin(process.argv))
         }
         return true;
       });
-      console.log(filteredTodos);
+      if (argv.category) {
+        console.log(`📋 할 일 목록 (카테고리: ${argv.category})`);
+      } else {
+        console.log('📋 할 일 목록');
+      }
+      if (filteredTodos.length === 0) {
+        console.log('  (비어있음)');
+        return;
+      }
+      filteredTodos.forEach((todo, idx) => {
+        const check = todo.done ? '[x]' : '[ ]';
+        const tagStr = todo.tags && todo.tags.length > 0 ? ` (태그: ${todo.tags.join(', ')})` : '';
+        console.log(`${check} ${idx + 1}. ${todo.title}${tagStr}`);
+      });
     }
   )
   .command(
