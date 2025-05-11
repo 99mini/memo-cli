@@ -60,15 +60,15 @@ yargs(hideBin(process.argv))
       if (argv.category) {
         console.log(`📋 할 일 목록 (카테고리: ${argv.category})`);
       } else {
-        console.log('📋 할 일 목록');
+        console.log("📋 할 일 목록");
       }
       if (filteredTodos.length === 0) {
-        console.log('  (비어있음)');
+        console.log("  (비어있음)");
         return;
       }
       filteredTodos.forEach((todo, idx) => {
-        const check = todo.done ? '[x]' : '[ ]';
-        const tagStr = todo.tags && todo.tags.length > 0 ? ` (태그: ${todo.tags.join(', ')})` : '';
+        const check = todo.done ? "[x]" : "[ ]";
+        const tagStr = todo.tags && todo.tags.length > 0 ? ` (태그: ${todo.tags.join(", ")})` : "";
         console.log(`${check} ${idx + 1}. ${todo.title}${tagStr}`);
       });
     }
@@ -121,9 +121,21 @@ yargs(hideBin(process.argv))
       return yargs.positional("id", { type: "string" });
     },
     (argv) => {
+      const { id } = argv;
+      if (!id) {
+        console.log("ID is required");
+        return;
+      }
       const todos = loadTodos();
-      const index = todos.findIndex((todo) => todo.id === argv.id);
-      if (index === -1) {
+      let index = todos.findIndex((todo) => todo.id === id);
+      // id가 uuid가 아니면 번호로 간주
+      if (index === -1 && !/^([0-9a-fA-F\-]{36})$/.test(id)) {
+        const num = parseInt(id, 10);
+        if (!isNaN(num) && num >= 1 && num <= todos.length) {
+          index = num - 1;
+        }
+      }
+      if (index === -1 || index >= todos.length) {
         console.log("Todo not found");
         return;
       }
