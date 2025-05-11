@@ -1,2 +1,7 @@
 node_modules
 
+dist
+
+todo-cli-linux
+todo-cli-macos
+todo-cli-win.exe
