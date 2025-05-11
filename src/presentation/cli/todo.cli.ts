@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { addTodo, listTodos, updateTodo, deleteTodo, doneTodo } from "@/domain/todo/todo.service";
+import { addTodo, listTodos, updateTodo, deleteTodo, doneTodo, listCategories, listTags } from "@/domain/todo/todo.service";
 
 import pkg from "../../../package.json";
 
@@ -27,15 +27,15 @@ yargs(hideBin(process.argv))
         category: argv.category as string,
         tags: argv.tags as string[],
       });
-      console.log(`✅ Added: [${todo.category ?? ""}] ${todo.title}${todo.tags && todo.tags.length > 0 ? ` (태그: ${todo.tags.join(", ")})` : ""}`);
+      console.log(`✅ Added: ${argv.category ? `[${argv.category}] ` : ""}${todo.title}${argv.tags && argv.tags.length > 0 ? ` (태그: ${argv.tags.join(", ")})` : ""}`);
     }
   )
   .command(
     "list",
     "Show todos",
     {
-      category: { type: "string" },
-      tag: { type: "string" },
+      category: { alias: "c", type: "string" },
+      tag: { alias: "t", type: "string" },
       done: { type: "boolean" },
     },
     (argv) => {
@@ -56,7 +56,8 @@ yargs(hideBin(process.argv))
       todos.forEach((todo, idx) => {
         const check = todo.done ? "[x]" : "[ ]";
         const tagStr = todo.tags && todo.tags.length > 0 ? ` (태그: ${todo.tags.join(", ")})` : "";
-        console.log(`${check} ${idx + 1}. ${todo.title}${tagStr}`);
+        const categoryName = todo.category ? `[${todo.category}] ` : "";
+        console.log(`${check} ${idx + 1}. ${categoryName}${todo.title}${tagStr}`);
       });
     }
   )
@@ -151,5 +152,28 @@ yargs(hideBin(process.argv))
       console.log(`✅ Done: ${done.title}`);
     }
   )
+  .command("categories", "Show categories", {}, (argv) => {
+    const categories = listCategories();
+    console.log("📋 할 일 카테고리 목록");
+    if (categories.length === 0) {
+      console.log("  (비어있음)");
+      return;
+    }
+    categories.forEach((category, idx) => {
+      console.log(`${idx + 1}. ${category}`);
+    });
+  })
+  .command("tags", "Show tags", {}, (argv) => {
+    const tags = listTags();
+    console.log("📋 할 일 태그 목록");
+    if (tags.length === 0) {
+      console.log("  (비어있음)");
+      return;
+    }
+    tags.forEach((tag, idx) => {
+      console.log(`${idx + 1}. ${tag}`);
+    });
+  })
+
   .help()
   .parse();
