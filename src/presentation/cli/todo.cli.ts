@@ -1,6 +1,6 @@
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
-import { addTodo, listTodos, updateTodo, deleteTodo, doneTodo } from "../../domain/todo/todo.service";
+import { addTodo, listTodos, updateTodo, deleteTodo, doneTodo } from "@/domain/todo/todo.service";
 
 // 모든 명령어 분리 및 서비스 레이어 사용
 
