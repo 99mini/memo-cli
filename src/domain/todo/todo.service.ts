@@ -1,3 +1,4 @@
+import { todoIndexFor } from "./lib/utils";
 import { Todo } from "./todo.entity";
 import { loadTodos, saveTodos } from "./todo.repository";
 import { v4 as uuidv4 } from "uuid";
@@ -30,7 +31,8 @@ export function listTodos({ category, tag, done }: { category?: string; tag?: st
 
 export function updateTodo(id: string, { description, category, tags }: Partial<Todo>): Todo | null {
   const todos = loadTodos();
-  const index = todos.findIndex((todo) => todo.id === id);
+  const index = todoIndexFor(id, todos);
+
   if (index === -1) return null;
   if (description !== undefined) todos[index].description = description;
   if (category !== undefined) todos[index].category = category;
@@ -42,7 +44,8 @@ export function updateTodo(id: string, { description, category, tags }: Partial<
 
 export function deleteTodo(id: string): boolean {
   const todos = loadTodos();
-  const index = todos.findIndex((todo) => todo.id === id);
+  const index = todoIndexFor(id, todos);
+
   if (index === -1) return false;
   todos.splice(index, 1);
   saveTodos(todos);
@@ -51,13 +54,7 @@ export function deleteTodo(id: string): boolean {
 
 export function doneTodo(id: string | number): Todo | null {
   const todos = loadTodos();
-  let index = typeof id === "number" ? id - 1 : todos.findIndex((todo) => todo.id === id);
-  if (typeof id === "string" && index === -1 && !/^([0-9a-fA-F\-]{36})$/.test(id)) {
-    const num = parseInt(id, 10);
-    if (!isNaN(num) && num >= 1 && num <= todos.length) {
-      index = num - 1;
-    }
-  }
+  const index = todoIndexFor(id, todos);
   if (index === -1 || index >= todos.length) return null;
   todos[index].done = true;
   todos[index].updatedAt = new Date();
