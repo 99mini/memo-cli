@@ -1,10 +1,10 @@
-export type Todo = {
+export interface Todo {
   id: string;
   title: string;
   description?: string;
-  done: boolean;
   category?: string;
-  tags?: (string | number)[];
+  tags?: string[];
+  done: boolean;
   createdAt: Date;
   updatedAt?: Date;
-};
+}
