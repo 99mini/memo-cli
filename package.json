@@ -1,18 +1,26 @@
 {
   "name": "memo-cli",
   "version": "1.0.0",
-  "main": "index.ts",
+  "homepage": "https://github.com/99mini/memo-cli",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsup src/index.ts --format cjs",
-    "package": "npx pkg ./dist/index.js --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --output memo",
-    "deploy:local": "mv memo-macos ~/.bin/memo && chmod +x ~/.bin/memo",
+    "package": "npx pkg ./dist/index.js --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --output pkg/memo",
+    "deploy:local": "mv pkg/memo-macos ~/.bin/memo && chmod +x ~/.bin/memo",
     "all:local": "npm run build && npm run package && npm run deploy:local"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "todo",
+    "memo",
+    "cli",
+    "typescript",
+    "node",
+    "yargs",
+    "pkg"
+  ],
+  "author": "99mini",
+  "license": "MIT",
+  "description": "간편하고 직관적인 CLI 기반의 TODO(할 일) 관리 도구입니다.",
   "bin": {
     "memo": "dist/index.js"
   },
