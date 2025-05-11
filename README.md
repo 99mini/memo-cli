@@ -33,8 +33,6 @@ $ npm run package
 $ cp pkg/memo-macos ~/.bin/memo && chmod +x ~/.bin/memo
 ```
 
-### 2. `curl`로 설치
-
 ## 사용 방법
 
 ```bash

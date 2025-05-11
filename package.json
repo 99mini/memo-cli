@@ -6,7 +6,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx tsup src/index.ts --format cjs",
     "package": "npx pkg ./dist/index.js --targets node18-win-x64,node18-macos-x64,node18-linux-x64 --output pkg/memo",
-    "deploy:local": "mv pkg/memo-macos ~/.bin/memo && chmod +x ~/.bin/memo",
+    "deploy:local": "cp pkg/memo-macos ~/.bin/memo && chmod +x ~/.bin/memo",
     "all:local": "npm run build && npm run package && npm run deploy:local"
   },
   "keywords": [
